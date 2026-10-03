@@ -1,0 +1,28 @@
+# Exclude profiles, chats, custom voice recordings, models and development output.
+# The explicitly selected src/Assets/Voice/F_Quiet.wav sample is included.
+Data/
+**/Data/
+VoiceRuntime/
+**/VoiceRuntime/
+build/
+build moved/
+download-probe/
+clean-package-test/
+publish-source/
+publication-repository.json
+publication-release.json
+dist/
+artifacts/
+test-results/
+**/test-results/
+.packages/
+.dotnet/
+.local/
+**/bin/
+**/obj/
+**/__pycache__/
+*.pdb
+*.user
+*.suo
+*.zip
+*.log

@@ -1,0 +1,47 @@
+<Window x:Class="QuietGPT.CompanionWindow"
+ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+ xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+ xmlns:local="clr-namespace:QuietGPT"
+ Title="Quiet companion" Width="230" Height="284" WindowStyle="None" ResizeMode="NoResize"
+ AllowsTransparency="True" Background="Transparent" Foreground="#EDF3EF" FontFamily="Segoe UI"
+ ShowInTaskbar="False" ShowActivated="False">
+ <Grid>
+  <Border x:Name="Expanded" CornerRadius="20" Background="Transparent" BorderThickness="0">
+   <Grid x:Name="AvatarLayout" Margin="0">
+    <Grid.RowDefinitions><RowDefinition Height="0"/><RowDefinition Height="*"/><RowDefinition Height="0"/><RowDefinition Height="0"/></Grid.RowDefinitions>
+    <Grid x:Name="HoverControls" Background="#D923342A" Opacity="0" MouseLeftButtonDown="DragCompanion" ToolTip="Drag to move · double-click to open Quiet">
+     <TextBlock Text="⠿" FontSize="18" Foreground="#C2D4C9" VerticalAlignment="Center" Margin="8,0,100,0"/>
+     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+      <Button Content="⚙" Width="28" MinWidth="28" Height="28" Padding="0" ToolTip="Companion settings" Click="BehaviourSettingsClick"/>
+      <Button x:Name="PinButton" Content="◇" Width="28" MinWidth="28" Height="28" Padding="0" ToolTip="Keep above other windows" AutomationProperties.Name="Pin companion" Click="PinClick"/>
+      <Button Content="−" Width="28" MinWidth="28" Height="28" Padding="0" ToolTip="Collapse to a small bubble" AutomationProperties.Name="Collapse companion" Click="CollapseClick"/>
+      <Button Content="×" Width="28" MinWidth="28" Height="28" Padding="0" ToolTip="Hide · reopen from Quiet's companion button" AutomationProperties.Name="Hide companion" Click="HideClick"/>
+     </StackPanel>
+    </Grid>
+    <Grid Grid.Row="1" Background="Transparent" MouseLeftButtonDown="DragCompanion">
+     <local:RiggedAvatarView x:Name="RiggedAvatar" Margin="0" Visibility="Collapsed" />
+     <local:LayeredAvatarView x:Name="EyeTrackingAvatar" Margin="4" Visibility="Collapsed" RenderOptions.BitmapScalingMode="HighQuality" ToolTip="Eyes follow your mouse · right-click for options" />
+
+     <Image x:Name="CustomAvatar" Stretch="Uniform" Margin="4" Visibility="Collapsed" RenderOptions.BitmapScalingMode="HighQuality"/>
+     <Viewbox x:Name="DefaultAvatar" Margin="8" Stretch="Uniform" ToolTip="Quiet ghost" AutomationProperties.Name="Quiet ghost fallback">
+      <Canvas x:Name="GhostLogo" Width="256" Height="256">
+       <Path x:Name="GhostOutline" Data="M 30,189 C 33,169 36,163 37,139 C 39,84 72,43 128,43 C 184,43 217,84 219,139 C 220,164 223,176 226,190 C 229,203 218,209 209,200 L 200,194 Q 176,217 152,198 Q 128,217 104,198 Q 80,217 56,194 L 47,200 C 38,209 27,203 30,189 Z" Fill="#AFE0D1" Stroke="#87BCAB" StrokeThickness="1.7"/>
+       <Ellipse Width="26" Height="29" Fill="#223C34" Canvas.Left="77" Canvas.Top="105.5"/>
+       <Ellipse Width="26" Height="29" Fill="#223C34" Canvas.Left="153" Canvas.Top="105.5"/>
+       <Ellipse Width="6.8" Height="7" Fill="#F0FFF6" Canvas.Left="82.6" Canvas.Top="111.5"/>
+       <Ellipse Width="6.8" Height="7" Fill="#F0FFF6" Canvas.Left="158.6" Canvas.Top="111.5"/>
+       <Path Data="M 111,147 C 120,158 136,158 145,147" Stroke="#223C34" StrokeThickness="6.2" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+      </Canvas>
+     </Viewbox>
+    </Grid>
+    <TextBlock x:Name="ActivityLabel" Grid.Row="2" Visibility="Collapsed"/>
+    <Thumb x:Name="ResizeHandle" Grid.Row="3" Opacity="0" Width="18" Height="18" HorizontalAlignment="Right" VerticalAlignment="Bottom" Cursor="SizeNWSE" DragDelta="ResizeDrag" DragCompleted="ResizeDone" ToolTip="Drag to resize">
+     <Thumb.Template><ControlTemplate TargetType="Thumb"><Grid Background="Transparent"><Path Stroke="#A8C6B4" StrokeThickness="2" Data="M 5,15 L 15,5 M 10,15 L 15,10"/></Grid></ControlTemplate></Thumb.Template>
+    </Thumb>
+   </Grid>
+  </Border>
+  <Border x:Name="Bubble" Visibility="Collapsed" CornerRadius="30" Background="#E5253D30" BorderBrush="#B7E4CA" BorderThickness="1" MouseLeftButtonDown="BubbleClick" ToolTip="Double-click to expand · drag to move" Cursor="Hand">
+   <TextBlock x:Name="BubbleFace" Text="•ᴗ•" Foreground="#D9F4E4" FontSize="19" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+  </Border>
+ </Grid>
+</Window>

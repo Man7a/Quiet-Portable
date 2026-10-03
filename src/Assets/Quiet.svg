@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+  <title>Quiet</title>
+  <desc>The mint ghost patch from Quiet's hat and jacket on a dark jade tile.</desc>
+  <defs>
+    <linearGradient id="plate" x1="35" y1="22" x2="228" y2="250" gradientUnits="userSpaceOnUse"><stop stop-color="#263E39"/><stop offset="1" stop-color="#0C1715"/></linearGradient>
+    <linearGradient id="edge" x1="35" y1="22" x2="228" y2="250" gradientUnits="userSpaceOnUse"><stop stop-color="#54796C"/><stop offset="1" stop-color="#1A302A"/></linearGradient>
+  </defs>
+  <path d="M68 12H188C219 12 244 37 244 68V188C244 219 219 244 188 244H68C37 244 12 219 12 188V68C12 37 37 12 68 12Z" fill="url(#plate)" stroke="url(#edge)" stroke-width="2"/>
+  <g>
+    <path d="M 30,189 C 33,169 36,163 37,139 C 39,84 72,43 128,43 C 184,43 217,84 219,139 C 220,164 223,176 226,190 C 229,203 218,209 209,200 L 200,194 Q 176,217 152,198 Q 128,217 104,198 Q 80,217 56,194 L 47,200 C 38,209 27,203 30,189 Z" fill="#AFE0D1" stroke="#87BCAB" stroke-width="1.7"/>
+    <g fill="#223C34"><ellipse cx="90" cy="120" rx="13" ry="14.5"/><ellipse cx="166" cy="120" rx="13" ry="14.5"/></g>
+    <g fill="#F0FFF6"><ellipse cx="86" cy="115" rx="3.4" ry="3.5"/><ellipse cx="162" cy="115" rx="3.4" ry="3.5"/></g>
+    <path d="M 111,147 C 120,158 136,158 145,147" fill="none" stroke="#223C34" stroke-width="6.2" stroke-linecap="round"/>
+  </g>
+</svg>

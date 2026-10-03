@@ -1,0 +1,71 @@
+<Window x:Class="QuietGPT.MainWindow"
+ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+ xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+ xmlns:wv="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
+ xmlns:shell="clr-namespace:System.Windows.Shell;assembly=PresentationFramework"
+ Title="Quiet · ChatGPT" Icon="pack://application:,,,/QuietGPT;component/Assets/Quiet.ico" Width="1180" Height="820" MinWidth="660" MinHeight="480"
+ Background="#171B19" Foreground="#EDF3EF" FontFamily="Segoe UI" FontSize="13"
+ WindowStartupLocation="CenterScreen" WindowStyle="None" ResizeMode="CanResize"
+ Loaded="WindowLoaded" Closing="WindowClosing" PreviewKeyDown="WindowKeyDown">
+  <shell:WindowChrome.WindowChrome>
+    <shell:WindowChrome CaptionHeight="54" ResizeBorderThickness="6" GlassFrameThickness="0" CornerRadius="10" />
+  </shell:WindowChrome.WindowChrome>
+  <Border BorderBrush="#303A34" BorderThickness="1">
+    <Grid>
+      <Grid.RowDefinitions><RowDefinition Height="54" /><RowDefinition Height="*" /><RowDefinition Height="27" /></Grid.RowDefinitions>
+      <Grid Margin="14,0,8,0">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="Auto" /><ColumnDefinition Width="Auto" /><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /><ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,20,0">
+          <Image Source="Assets/Quiet.png" Width="30" Height="30" Margin="0,0,10,0" RenderOptions.BitmapScalingMode="HighQuality" />
+          <TextBlock Text="Quiet" FontWeight="SemiBold" FontSize="15" VerticalAlignment="Center" />
+        </StackPanel>
+        <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" shell:WindowChrome.IsHitTestVisibleInChrome="True">
+          <Button x:Name="BackButton" Content="&#xE72B;" FontFamily="Segoe Fluent Icons" ToolTip="Back (Alt+Left)" AutomationProperties.Name="Back" Click="BackClick" IsEnabled="False" />
+          <Button x:Name="ReloadButton" Content="&#xE72C;" FontFamily="Segoe Fluent Icons" ToolTip="Reload (Ctrl+R)" AutomationProperties.Name="Reload" Click="ReloadClick" />
+          <Button Content="&#xE80F;" FontFamily="Segoe Fluent Icons" ToolTip="ChatGPT home (Alt+Home)" AutomationProperties.Name="ChatGPT home" Click="HomeClick" />
+        </StackPanel>
+        <TextBlock x:Name="OriginLabel" Grid.Column="2" Text="chatgpt.com" Foreground="#93A69A" FontSize="12" VerticalAlignment="Center" HorizontalAlignment="Center" TextTrimming="CharacterEllipsis" Margin="14,0" />
+        <StackPanel Grid.Column="3" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,12,0" shell:WindowChrome.IsHitTestVisibleInChrome="True">
+          <Button Content="&#xE76E;" FontFamily="Segoe Fluent Icons" ToolTip="Show companion" AutomationProperties.Name="Show companion" Click="CompanionClick" />
+          <Button Content="&#xE8D6;" FontFamily="Segoe Fluent Icons" ToolTip="Read reply aloud" AutomationProperties.Name="Read reply aloud" Click="ReadReplyClick" />
+          <Button x:Name="DownloadsButton" ToolTip="Downloads (Ctrl+J)" AutomationProperties.Name="Downloads" Click="DownloadsClick">
+            <Grid Width="26" Height="26">
+              <TextBlock Text="&#xE896;" FontFamily="Segoe Fluent Icons" HorizontalAlignment="Center" VerticalAlignment="Center" />
+              <TextBlock x:Name="DownloadBadge" FontFamily="Segoe UI" FontSize="10" FontWeight="Bold" Background="#171B19" HorizontalAlignment="Right" VerticalAlignment="Top" Visibility="Collapsed" />
+            </Grid>
+          </Button>
+          <Button x:Name="MenuButton" Content="&#xE712;" FontFamily="Segoe Fluent Icons" ToolTip="More" AutomationProperties.Name="More options" Click="MenuClick" />
+        </StackPanel>
+        <StackPanel Grid.Column="4" Orientation="Horizontal" VerticalAlignment="Center" shell:WindowChrome.IsHitTestVisibleInChrome="True">
+          <Button Content="&#xE921;" FontFamily="Segoe Fluent Icons" FontSize="10" ToolTip="Minimize" AutomationProperties.Name="Minimize" Click="MinimizeClick" />
+          <Button x:Name="MaximizeButton" Content="&#xE922;" FontFamily="Segoe Fluent Icons" FontSize="10" ToolTip="Maximize" AutomationProperties.Name="Maximize" Click="MaximizeClick" />
+          <Button Content="&#xE8BB;" FontFamily="Segoe Fluent Icons" FontSize="11" ToolTip="Close" AutomationProperties.Name="Close" Click="CloseClick" />
+        </StackPanel>
+      </Grid>
+      <Grid Grid.Row="1" Background="#212121">
+        <Grid.RowDefinitions><RowDefinition Height="*"/></Grid.RowDefinitions>
+        <Border x:Name="BridgeBar" Grid.Row="0" Panel.ZIndex="2" VerticalAlignment="Top" Visibility="Collapsed" Background="#304A3C" Padding="12,7">
+          <DockPanel><Button x:Name="BridgeSync" DockPanel.Dock="Right" Content="Sync messages" Click="BridgeSyncClick"/><TextBlock x:Name="BridgeText" VerticalAlignment="Center" TextWrapping="Wrap"/></DockPanel>
+        </Border>
+        <wv:WebView2 Grid.Row="0" x:Name="Browser" DefaultBackgroundColor="#212121" Visibility="Hidden" />
+        <Border Grid.Row="0" x:Name="StartPanel" Background="#171B19">
+          <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" MaxWidth="480" Margin="32">
+            <TextBlock Text="A little room to think." FontSize="28" FontWeight="SemiBold" TextAlignment="Center" />
+            <TextBlock x:Name="StartMessage" Text="Opening ChatGPT…" Foreground="#9DAC9F" TextAlignment="Center" TextWrapping="Wrap" Margin="0,14,0,22" />
+            <Button x:Name="RetryButton" Content="Try again" Background="#304A3C" HorizontalAlignment="Center" Visibility="Collapsed" Click="ReloadClick" />
+          </StackPanel>
+        </Border>
+      </Grid>
+      <Grid Grid.Row="2" Margin="15,0">
+        <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+          <Ellipse x:Name="StatusDot" Width="5" Height="5" Fill="#B7E4CA" Margin="0,0,8,0" />
+          <TextBlock x:Name="StatusText" Text="Starting…" FontSize="11" Foreground="#9CAC9F" TextTrimming="CharacterEllipsis" MaxWidth="500" />
+        </StackPanel>
+        <TextBlock Grid.Column="1" Text="JUST YOU + CHATGPT" FontSize="9" Foreground="#6F8275" VerticalAlignment="Center" />
+      </Grid>
+    </Grid>
+  </Border>
+</Window>

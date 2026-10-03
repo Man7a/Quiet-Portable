@@ -1,0 +1,46 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows10.0.17763.0</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AssemblyName>QuietGPT</AssemblyName>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationIcon>Assets\Quiet.ico</ApplicationIcon>
+    <Version>2.8.0</Version>
+    <Product>Quiet Portable</Product>
+    <DebugType>none</DebugType>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <DefaultItemExcludes>$(DefaultItemExcludes);Backups/**</DefaultItemExcludes>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.4191.47" />
+    <Content Include="Assets\Avatar\index.html" Link="Avatar\index.html" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+    <Content Include="Assets\Voice\constraints-turbo.txt" Link="Voice\constraints-turbo.txt" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+    <Content Include="Assets\Voice\F_Quiet.wav" Link="Voice\F_Quiet.wav" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+    <Content Include="Assets\Voice\setup-voice.ps1" Link="Voice\setup-voice.ps1" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+    <Content Include="Assets\Voice\bootstrap-voice.py" Link="Voice\bootstrap-voice.py" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+    <Content Include="Assets\Voice\requirements-turbo.txt" Link="Voice\requirements-turbo.txt" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+    <Content Include="Assets\Voice\quiet-speech-worker.py" Link="Voice\quiet-speech-worker.py" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+    <Resource Include="Assets\Quiet.ico" />
+    <Resource Include="Assets\Quiet.png" /><Resource Include="Assets\Quiet.svg" /><Resource Include="Assets\CompanionEyes\*.png" />
+  </ItemGroup>
+  <Target Name="CopyShortcutIcon" AfterTargets="Publish">
+    <Copy SourceFiles="Assets\Quiet.ico" DestinationFolder="$(PublishDir)" />
+  </Target>
+  <Target Name="RemoveRetiredVideo" AfterTargets="Build;Publish">
+    <Delete Files="$(TargetDir)avatar-video.qav" Condition="'$(TargetDir)' != ''" />
+    <Delete Files="$(PublishDir)avatar-video.qav" Condition="'$(PublishDir)' != ''" />
+  </Target>
+</Project>
+
+
+
+
+
+
+
+
+
+

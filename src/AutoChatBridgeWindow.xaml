@@ -1,0 +1,50 @@
+﻿<Window x:Class="QuietGPT.AutoChatBridgeWindow"
+ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+ Title="Ray &amp; Mira · Quiet" Width="860" Height="760" MinWidth="720" MinHeight="650" Background="#17201B" Foreground="#EDF3EF" FontFamily="Segoe UI" FontSize="14" WindowStartupLocation="CenterOwner">
+ <Grid Margin="24">
+  <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+  <StackPanel Margin="0,0,0,18"><TextBlock Text="Ray &amp; Mira" FontSize="26" FontWeight="SemiBold"/><TextBlock Text="Talk with Ray. Let her coordinate the work with Mira." Foreground="#B2C9BC" Margin="0,6,0,0"/></StackPanel>
+  <Border Grid.Row="1" Background="#233B2B" CornerRadius="10" Padding="16" Margin="0,0,0,18">
+   <StackPanel><TextBlock Text="Enable the connection, then chat normally" FontWeight="SemiBold"/><TextBlock Text="Let Ray work with Mira" FontSize="18" Margin="0,8,0,6" TextWrapping="Wrap"/><TextBlock Text="Turning on the switch sends Ray the instructions automatically. Tell her what you want to work on—no special phrase or copying needed." Foreground="#C1D8CA" TextWrapping="Wrap"/><TextBlock Text="Stays on until you turn it off. Ray addresses Mira only when help is needed." FontSize="12" Foreground="#A6C8B3" TextWrapping="Wrap" Margin="0,8,0,0"/></StackPanel>
+  </Border>
+  <TabControl Grid.Row="2" Background="Transparent" BorderThickness="0">
+   <TabItem Header="Connected chats"><Grid Margin="0,14,0,0">
+    <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+    <TextBlock Text="Choose where you talk to Ray and where Mira does the work. Each pair has its own switch." TextWrapping="Wrap" Foreground="#B2C9BC" Margin="0,0,0,10"/>
+    <Grid Grid.Row="1">
+     <ListBox x:Name="Connections" Background="#101813" Foreground="#EDF3EF" BorderBrush="#3D5948" HorizontalContentAlignment="Stretch">
+      <ListBox.ItemTemplate><DataTemplate><Border Padding="12" Margin="0,2" Background="#21352A" CornerRadius="7"><Grid><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+       <StackPanel Margin="0,0,12,0"><TextBlock Text="Talk to Ray here" Foreground="#91AC9A" FontSize="11"/><TextBlock Text="{Binding RayTitle}" FontWeight="SemiBold" TextWrapping="Wrap"/><TextBlock Text="Mira works in this Codex task" Foreground="#91AC9A" FontSize="11" Margin="0,8,0,0"/><TextBlock Text="{Binding MiraTitle}" TextWrapping="Wrap"/></StackPanel>
+       <CheckBox Grid.Column="1" Content="Let Ray work with Mira" IsChecked="{Binding Enabled,Mode=OneWay}" Click="ToggleClick" VerticalAlignment="Center" ToolTip="On introduces Ray to the bridge. Off stops further handoffs; work already sent may still finish."/>
+      </Grid></Border></DataTemplate></ListBox.ItemTemplate>
+     </ListBox>
+     <TextBlock Text="No chats connected yet. Choose a pair below." Foreground="#B2C9BC" HorizontalAlignment="Center" VerticalAlignment="Center" IsHitTestVisible="False"><TextBlock.Style><Style TargetType="TextBlock"><Setter Property="Visibility" Value="Collapsed"/><Style.Triggers><DataTrigger Binding="{Binding Items.Count,ElementName=Connections}" Value="0"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers></Style></TextBlock.Style></TextBlock>
+    </Grid>
+    <DockPanel Grid.Row="2" Margin="0,6,0,10"><Button Content="Disconnect selected pair" Click="RemoveClick" HorizontalAlignment="Left"/><TextBlock Text="Off stops further handoffs. Turn it on again for a new task." Foreground="#91AC9A" FontSize="11" VerticalAlignment="Center" TextWrapping="Wrap" Margin="12,0,0,0"/></DockPanel>
+    <Border Grid.Row="3" Padding="12" CornerRadius="8" Background="#23342A"><StackPanel>
+     <DockPanel Margin="0,0,0,8"><Button DockPanel.Dock="Right" Content="Refresh chat list" Click="RefreshClick"/><TextBlock Text="Connect another chat" FontWeight="SemiBold" VerticalAlignment="Center"/></DockPanel>
+     <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="16"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions><StackPanel><TextBlock Text="Your ChatGPT conversation with Ray" FontSize="12" Margin="0,0,0,5"/><ComboBox x:Name="RayChats" DisplayMemberPath="Title" MinHeight="34"/></StackPanel><StackPanel Grid.Column="2"><TextBlock Text="Mira’s Codex task" FontSize="12" Margin="0,0,0,5"/><ComboBox x:Name="MiraChats" DisplayMemberPath="Title" MinHeight="34"/></StackPanel></Grid>
+     <DockPanel Margin="0,10,0,0"><Button DockPanel.Dock="Right" Content="Connect and enable" Click="AddClick" Background="#365C45"/><TextBlock Text="Connecting sends Ray the bridge instructions. She will ask what you want to work on." Foreground="#B2C9BC" FontSize="11" TextWrapping="Wrap" VerticalAlignment="Center" Margin="0,0,12,0"/></DockPanel>
+    </StackPanel></Border>
+   </Grid></TabItem>
+   <TabItem Header="Activity"><Grid Margin="0,14,0,0"><Grid.RowDefinitions><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+    <Grid><ListBox x:Name="Requests" Background="#101813" Foreground="#EDF3EF" BorderBrush="#3D5948" HorizontalContentAlignment="Stretch"><ListBox.ItemTemplate><DataTemplate><Border Background="#21352A" CornerRadius="7" Padding="12" Margin="0,3"><StackPanel>
+     <TextBlock Text="{Binding ModeLabel}" Foreground="#91AC9A" FontSize="12"/><TextBlock Text="{Binding Info}" Foreground="#C4EDD2" FontWeight="SemiBold" TextWrapping="Wrap" Margin="0,5,0,0"/><TextBlock Text="{Binding Text}" TextWrapping="Wrap" MaxHeight="90" TextTrimming="CharacterEllipsis" Margin="0,7,0,0"/><TextBlock Text="{Binding Created,StringFormat={}{0:g}}" Foreground="#91AC9A" FontSize="11" Margin="0,7,0,0"/>
+     <StackPanel Orientation="Horizontal" Margin="0,8,0,0"><Button Content="Stop work" Click="StopClick"><Button.Style><Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}"><Style.Triggers><MultiDataTrigger><MultiDataTrigger.Conditions><Condition Binding="{Binding State}" Value="done"/><Condition Binding="{Binding AwaitingUser}" Value="False"/></MultiDataTrigger.Conditions><Setter Property="Visibility" Value="Collapsed"/></MultiDataTrigger></Style.Triggers></Style></Button.Style></Button><Button Content="Retry after checking Codex" Click="RetryClick" Margin="8,0,0,0"><Button.Style><Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}"><Setter Property="Visibility" Value="Collapsed"/><Style.Triggers><DataTrigger Binding="{Binding State}" Value="uncertain"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers></Style></Button.Style></Button></StackPanel>
+    </StackPanel></Border></DataTemplate></ListBox.ItemTemplate></ListBox>
+    <TextBlock Text="Nothing sent yet. Start a task in your connected Ray chat." Foreground="#B2C9BC" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" IsHitTestVisible="False"><TextBlock.Style><Style TargetType="TextBlock"><Setter Property="Visibility" Value="Collapsed"/><Style.Triggers><DataTrigger Binding="{Binding Items.Count,ElementName=Requests}" Value="0"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers></Style></TextBlock.Style></TextBlock></Grid>
+    <TextBlock Grid.Row="1" Text="Confirmed pre-send failures retry automatically. If delivery is uncertain, check the Codex task before retrying to avoid a duplicate. Stop prevents further requests." TextWrapping="Wrap" Foreground="#B2C9BC" FontSize="12" Margin="0,12,0,0"/>
+   </Grid></TabItem>
+   <TabItem Header="Help"><ScrollViewer VerticalScrollBarVisibility="Auto"><StackPanel Margin="12,16">
+    <TextBlock Text="One setup, then stay in your conversation" FontWeight="SemiBold" FontSize="18" Margin="0,0,0,12"/>
+    <TextBlock Text="Connect a Ray chat to a Codex task, or turn on ‘Let Ray work with Mira’ for an existing pair. Quiet automatically explains the bridge to Ray. Answer her normally and include any limits, such as ‘ideas only’ or ‘do not change files yet’. You do not need a command." TextWrapping="Wrap" Margin="0,0,0,14"/>
+    <TextBlock Text="Ray writes the request for you, reads Mira’s result, and can ask follow-up questions within the same task. She pauses when you need to decide; answer her normally and she can continue. The connection stays on between tasks until you switch it off." TextWrapping="Wrap" Margin="0,0,0,14"/>
+    <TextBlock Text="To stop: say ‘Ray, stop working with Mira’ or press Stop work in Activity. This prevents future handoffs; it does not interrupt a Codex action already underway." TextWrapping="Wrap" Margin="0,0,0,14"/>
+    <TextBlock Text="Ray sends a request by starting a new line with @Mira. Only the message after that address is sent; Quiet does not add your chat or earlier discussion. Ray should include any context or limits Mira needs. Ordinary mentions of Mira, quoted examples, and code blocks do not trigger a handoff. Replies return as plain text." TextWrapping="Wrap" Margin="0,0,0,14"/>
+    <TextBlock Text="Keep Quiet and Codex open. You can switch chats; results return to their original conversation. Your drafts are preserved, so a pending result can wait while you type. Busy Codex tasks wait their turn." TextWrapping="Wrap" Margin="0,0,0,14"/>
+    <TextBlock Text="Permissions and usage still apply. Ray cannot approve extra work on your behalf. A Codex update or restart may require reconnecting the local connector. If delivery is uncertain, Activity explains the issue; Quiet does not blindly send it again." TextWrapping="Wrap" Foreground="#B2C9BC"/>
+   </StackPanel></ScrollViewer></TabItem>
+  </TabControl>
+  <TextBlock Grid.Row="3" x:Name="StatusText" Text="Connecting…" TextWrapping="Wrap" Foreground="#B2DCC1" FontSize="12" Margin="0,14,0,0"/>
+ </Grid>
+</Window>
